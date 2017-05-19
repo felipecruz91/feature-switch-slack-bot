@@ -1,0 +1,3 @@
+Jarvis - Feature Switch Slack Bot developed in Golang
+==============
+[![Build Status](https://travis-ci.org/felipecruz91/feature-switch-slack-bot.svg?branch=master)](https://travis-ci.org/felipecruz91/feature-switch-slack-bot) [![codecov](https://codecov.io/gh/felipecruz91/feature-switch-slack-bot/branch/master/graph/badge.svg?maxAge=0)](https://codecov.io/gh/felipecruz91/feature-switch-slack-bot/) [![Go Report Card](https://goreportcard.com/badge/github.com/felipecruz91/feature-switch-slack-bot)](https://goreportcard.com/report/github.com/felipecruz91/feature-switch-slack-bot) [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
