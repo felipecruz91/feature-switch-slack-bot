@@ -4,9 +4,13 @@
 	"GodepVersion": "v79",
 	"Deps": [
 		{
-			"ImportPath": "github.com/gorilla/mux",
-			"Comment": "v1.3.0-6-g4c1c395",
-			"Rev": "4c1c3952b7d9d0a061a3fa7b36fd373ba0398ebc"
+			"ImportPath": "github.com/nlopes/slack",
+			"Comment": "v0.0.1-210-g72d15a0",
+			"Rev": "72d15a0fc0b773a59c00f78b9e7d97eeb8c4281f"
+		},
+		{
+			"ImportPath": "golang.org/x/net/websocket",
+			"Rev": "513929065c19401a1c7b76ecd942f9f86a0c061b"
 		}
 	]
 }

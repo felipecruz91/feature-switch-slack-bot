@@ -1,12 +1,10 @@
 package main
 
 import (
-	"io"
-	"net/http"
+	"fmt"
+	"log"
 	"os"
 	"strings"
-
-	"fmt"
 
 	"github.com/nlopes/slack"
 )
@@ -14,18 +12,7 @@ import (
 // Slack Bot Token
 var slackToken = os.Getenv("SLACK_TOKEN")
 
-// HealthCheckEndpoint returns 200 OK
-func HealthCheckEndpoint(w http.ResponseWriter, req *http.Request) {
-	w.WriteHeader(http.StatusOK)
-	w.Header().Set("Content-Type", "application/json")
-	io.WriteString(w, `{"alive": true}`)
-}
-
 func main() {
-	//router := mux.NewRouter()
-	//router.HandleFunc("/healthcheck", HealthCheckEndpoint).Methods("GET")
-	//log.Fatal(http.ListenAndServe(":12345", router))
-
 	slackAPI := slack.New(slackToken)
 	rtm := slackAPI.NewRTM()
 
@@ -37,7 +24,7 @@ Loop:
 	for {
 		select {
 		case msg := <-rtm.IncomingEvents:
-			fmt.Print("Event Received: ")
+
 			switch ev := msg.Data.(type) {
 			case *slack.ConnectedEvent:
 				fmt.Printf("Connection counter: ", ev.ConnectionCount)
@@ -45,11 +32,28 @@ Loop:
 			case *slack.MessageEvent:
 				fmt.Printf("Message :%v\n", ev)
 				info := rtm.GetInfo()
-				prefix := fmt.Sprintf("<@%s> ", info.User.ID)
+				prefix := fmt.Sprintf("<@%s> check", info.User.ID)
 
 				if ev.User != info.User.ID && strings.HasPrefix(ev.Text, prefix) {
 
-					rtm.SendMessage(rtm.NewOutgoingMessage("What's up buddy!?!?", ev.Channel))
+					// Parse Experiment name
+					experimentName, err := ParseExperimentName(ev.Text)
+					if err != nil {
+						log.Print(err)
+					}
+
+					// Get Experiment from Experimentation API
+					var txt string
+					experiment, err := GetExperiment(experimentName)
+					if err != nil {
+						txt = "The experiment *" + experimentName + "* is currently *switched OFF*  in " + "*QA*" + ":x:"
+						log.Print(err)
+					} else {
+						txt = "The experiment *" + experiment.Name + "* is currently *switched ON*  in " + "*QA*" + ":white_check_mark:"
+					}
+
+					// Send response to the Slack channel
+					rtm.SendMessage(rtm.NewOutgoingMessage(txt, ev.Channel))
 				}
 
 			case *slack.RTMError:
