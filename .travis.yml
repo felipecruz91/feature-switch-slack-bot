@@ -6,6 +6,7 @@ go:
 
 before_install:
   - go get -v github.com/gorilla/mux
+  - go get -v github.com/nlopes/slack
 
 script:
   - go test -race -coverprofile=coverage.txt -covermode=atomic
