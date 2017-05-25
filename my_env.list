@@ -1,0 +1,3 @@
+SLACK_TOKEN=token
+Z_AUTH_KEY_QA=authKey
+EXP_API_URL_QA=expApiUrl
